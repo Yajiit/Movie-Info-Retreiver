@@ -40,6 +40,10 @@ document.addEventListener('DOMContentLoaded', function() {
           });
 
           // creats a template literal string that dynamically replaces any content in the movieInfo with the retrieved JSON data arranged in a readable form
+
+          moviePoster.innerHTML = `<img src="${data.Poster}" alt="${data.Title} Poster">
+        `
+
           movieInfo.innerHTML = `
             <h2>${data.Title}</h2>
             <p>Year: ${data.Year}</p>
@@ -48,9 +52,8 @@ document.addEventListener('DOMContentLoaded', function() {
             <p>Starring: ${data.Actors}</p>
             <p>Plot Synopsis: ${data.Plot}</p>
             ${ratingsHTML}
-            <img src="${data.Poster}" alt="${data.Title} Poster">
           `;
-          // applies <h2> tag to the movie Title for CSS styling, then adds a paragraph for each other retrieved JSON data property, including the ratingsHTML assembled earlier
+        // applies <h2> tag to the movie Title for CSS styling, then adds a paragraph for each other retrieved JSON data property, including the ratingsHTML assembled earlier
           // other available properties from omdb api's JSON data include: Runtime, Genre, Writer, Language
 
           // if the Reponse property of the JSON data is not True then display a not found message
