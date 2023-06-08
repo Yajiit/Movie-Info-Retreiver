@@ -7,7 +7,9 @@ document.addEventListener('DOMContentLoaded', function() {
   });
   
   // searchMovie function to fetch movie info
-  function searchMovie() {
+  function searchMovie(event) {
+    // prevent form submission
+    event.preventDefault();
     // grabs the text field with id searchInput from html and sets it as variable called input
     const input = document.getElementById('searchInput');
     // grabs the entered text value from the input and sets it as query
@@ -22,6 +24,8 @@ document.addEventListener('DOMContentLoaded', function() {
         // omdb api's parsed JSON object has a "Response" property that will return as "True" when a valid title is searched.
         // we can check the data.Response property to see if a valid movie was found 
         if (data.Response === "True") {
+       // saves JSON response to local storage
+        localStorage.setItem('movieInfo', JSON.stringify(data));
           // Retrieve the IMDB ID. This will be used for the Watchmode api's fetch
           const imdbId = data.imdbID;
   
@@ -79,6 +83,8 @@ document.addEventListener('DOMContentLoaded', function() {
       .then(response => response.json())
       // runs that JSON response object as data
       .then(data => {
+      // saves JSON response to local storage
+      localStorage.setItem('sources', JSON.stringify(data));
         console.log(data); // Logs the response data to the console
   
         // if conditional to check that there are more than zero sources fetched
@@ -116,3 +122,46 @@ document.addEventListener('DOMContentLoaded', function() {
         sourcesList.innerHTML = `<p>Error: ${error.message}</p>`;
       });
   }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    // retrieve the movieInfo data from local storage
+    const movieData = JSON.parse(localStorage.getItem('movieInfo'));
+  
+    // check if previous movieData exists in local storage
+    if (movieData) {
+      // retrieve info from the movieData
+      const {
+        Title,
+        Year,
+        Rated,
+        Director,
+        Actors,
+        Plot,
+        Ratings,
+        Poster
+      } = movieData;
+  
+      // retrieve the movieInfo element
+      const movieInfo = document.getElementById('movieInfo');
+      // create a string to display ratings
+      let ratingsHTML = "";
+      // use foreach to create a line per rating
+      Ratings.forEach(rating => {
+        ratingsHTML += `<p>${rating.Source}: ${rating.Value}</p>`;
+      });
+  
+      // Create the HTML content to display the movie information
+      const htmlContent = `
+      <img src="${Poster}" alt="${Title} Poster">
+        <h2>${Title}</h2>
+        <p>Year: ${Year}</p>
+        <p>Rating: ${Rated}</p>
+        <p>Director: ${Director}</p>
+        <p>Starring: ${Actors}</p>
+        <p>Plot Synopsis: ${Plot}</p>
+        ${ratingsHTML}
+      `;
+  
+      // Set the HTML content to the movieInfo element
+      movieInfo.innerHTML = htmlContent;
+    }});
