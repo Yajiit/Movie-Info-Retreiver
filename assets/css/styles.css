@@ -1,0 +1,16 @@
+main {
+    margin: 10rem;
+}
+
+#moviePoster {
+    margin: 3rem;
+}
+
+#moveProfile {
+    margin-top: 3rem;
+}
+
+#sourcesList ul, li {
+    list-style-type: none;
+    display: inline;
+}
