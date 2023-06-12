@@ -29,8 +29,9 @@ document.addEventListener('DOMContentLoaded', function() {
           // Retrieve the IMDB ID. This will be used for the Watchmode api's fetch
           const imdbId = data.imdbID;
   
+          // DISABLED TO SAVE API USES
           // Call the getSources function with the IMDB ID
-          getSources(imdbId);
+          // getSources(imdbId);
   
           // grabs the movieInfo <div> and sets as variable
           const movieInfo = document.getElementById('movieInfo');
