@@ -46,8 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
           // creats a template literal string that dynamically replaces any content in the movieInfo with the retrieved JSON data arranged in a readable form
 
-          moviePoster.innerHTML = `<img src="${data.Poster}" alt="${data.Title} Poster">
-        `
+          moviePoster.innerHTML = `<img src="${data.Poster}" alt="${data.Title} Poster"> `
 
           movieInfo.innerHTML = `
             <h2>${data.Title}</h2>
@@ -154,8 +153,8 @@ document.addEventListener('DOMContentLoaded', function() {
       });
   
       // Create the HTML content to display the movie information
+      moviePoster.innerHTML = `<img src="${Poster}" alt="${Title} Poster"> `
       const htmlContent = `
-      <img src="${Poster}" alt="${Title} Poster">
         <h2>${Title}</h2>
         <p>Year: ${Year}</p>
         <p>Rating: ${Rated}</p>
