@@ -33,15 +33,45 @@ figure img {
 }
 
 .card {
+    display: flex;
     margin: .5rem;
     justify-content: center;
     align-items: center;
     border-radius: 1rem;
-    border-color: black;
+    border-color: none;
+    width: 18rem;
 }
 
-.card-img-top {
-    width: 17.9rem;
+.listPoster {
+    width: 18rem;
+    height: 100%;
     border-radius: 1rem;
     border-style: solid;
+    margin: none;
+}
+
+.btn {
+    align-items: center;
+    justify-content: center;
+    width: 18rem;
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#buttons {
+    position: relative;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.cardBtn {
+    border-style: solid;
+    background-color: none;
+    border-radius: 1rem;;
 }

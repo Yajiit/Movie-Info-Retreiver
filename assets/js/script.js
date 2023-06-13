@@ -88,8 +88,12 @@ function watchlistAdd() {
         movieObject = {
           title: data.Title,
           poster: data.Poster,
+          ageRating: data.Rated,
+          actors: data.Actors,
+          criticalRating: data.Ratings,
           plot: data.Plot,
-          imdbId: data.imdbID
+          imdbId: data.imdbID,
+          year: data.Year
         }
 
         moviePoster.innerHTML = `<img src="${data.Poster}" alt="${data.Title} Poster">`;
@@ -215,3 +219,15 @@ function watchlistAdd() {
       // Set the HTML content to the movieInfo element
       movieInfo.innerHTML = htmlContent;
     }});
+
+    function displayMovie() {
+      movieInfo.innerHTML = `
+          <h2>${movieObject.title}</h2>
+          <p>Year: ${movieObject.year}</p>
+          <p>Rating: ${movieObject.ageRating}</p>
+          <p>Director: ${movieObject.director}</p>
+          <p>Starring: ${movieObject.actors}</p>
+          <p>Plot Synopsis: ${movieObject.plot}</p>
+          ${movieObject.criticalRating}
+        `;
+    }
