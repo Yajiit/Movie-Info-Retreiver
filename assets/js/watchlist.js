@@ -6,7 +6,7 @@ card.setAttribute("style", "width: 18rem;");
 
 document.addEventListener('DOMContentLoaded', function() {
 if(JSON.parse(localStorage.getItem("savedWatchlist")) != null) {
-    localWatchlist = (JSON.parse(localStorage.getItem("savedWatchlist")));
+    localWatchlist = (JSON.parse(localStorage.getItem("savedWatchlist")).filter(item => item !== null));
     console.log(localWatchlist)
     for(var i=0; i<localWatchlist.length; i++){
         card.innerHTML = `<img src=${localWatchlist[i].poster} class="card-img-top" alt=${localWatchlist[i].title}>
