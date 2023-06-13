@@ -72,6 +72,9 @@ function watchlistAdd() {
           // DISABLED TO SAVE API USES
           // Call the getSources function with the IMDB ID
           // getSources(imdbId);
+
+                    // Call the getRecommendations function with the movie title
+                    getRecommendations(data.Title);
   
         // grabs the movieInfo <div> and sets as variable
         const movieInfo = document.getElementById('movieInfo');
@@ -173,6 +176,43 @@ function watchlistAdd() {
         sourcesList.innerHTML = `<p>Error: ${error.message}</p>`;
       });
   }
+
+  // Function to fetch recommendations
+function getRecommendations(title) {
+  fetch(`https://www.omdbapi.com/?apikey=f26b11a3&s=${encodeURIComponent(title)}`)
+    .then(response => response.json())
+    .then(data => {
+      if (data.Response === "True" && data.Search) {
+        const recommendationsContainer = document.getElementById('recommendations');
+        recommendationsContainer.innerHTML = '';
+
+        data.Search.forEach(result => {
+          const recommendation = document.createElement('div');
+          recommendation.classList.add('recommendation');
+
+          const poster = document.createElement('img');
+          poster.src = result.Poster;
+          poster.alt = result.Title;
+
+          const title = document.createElement('p');
+          title.textContent = result.Title;
+
+          recommendation.appendChild(poster);
+          recommendation.appendChild(title);
+          recommendationsContainer.appendChild(recommendation);
+        });
+      } else {
+        const recommendationsContainer = document.getElementById('recommendations');
+        recommendationsContainer.innerHTML = `<p>No recommendations found.</p>`;
+      }
+    })
+    .catch(error => {
+      console.log(error);
+      const recommendationsContainer = document.getElementById('recommendations');
+      recommendationsContainer.innerHTML = `<p>Error: ${error.message}</p>`;
+    });
+}
+
 
   document.addEventListener('DOMContentLoaded', function() {
     // retrieve the movieInfo data from local storage
