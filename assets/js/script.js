@@ -69,8 +69,9 @@ function watchlistAdd() {
           // Retrieve the IMDB ID. This will be used for the Watchmode api's fetch
           const imdbId = data.imdbID;
   
-        // Call the getSources function with the IMDB ID
-        getSources(imdbId);
+          // DISABLED TO SAVE API USES
+          // Call the getSources function with the IMDB ID
+          // getSources(imdbId);
   
         // grabs the movieInfo <div> and sets as variable
         const movieInfo = document.getElementById('movieInfo');
@@ -83,7 +84,7 @@ function watchlistAdd() {
           ratingsHTML += `<p>${rating.Source}: ${rating.Value}</p>`;
         });
 
-        // creats a template literal string that dynamically replaces any content in the movieInfo with the retrieved JSON data arranged in a readable form
+
 
         movieObject = {
           title: data.Title,
@@ -95,7 +96,7 @@ function watchlistAdd() {
           imdbId: data.imdbID,
           year: data.Year
         }
-
+        // creats a template literal string that dynamically replaces any content in the movieInfo with the retrieved JSON data arranged in a readable form
         moviePoster.innerHTML = `<img src="${data.Poster}" alt="${data.Title} Poster">`;
 
         movieInfo.innerHTML = `
@@ -205,8 +206,8 @@ function watchlistAdd() {
       });
   
       // Create the HTML content to display the movie information
+      moviePoster.innerHTML = `<img src="${Poster}" alt="${Title} Poster"> `
       const htmlContent = `
-      <img src="${Poster}" alt="${Title} Poster">
         <h2>${Title}</h2>
         <p>Year: ${Year}</p>
         <p>Rating: ${Rated}</p>
@@ -218,16 +219,6 @@ function watchlistAdd() {
   
       // Set the HTML content to the movieInfo element
       movieInfo.innerHTML = htmlContent;
+      movieInfo.append(watchlistButton);
+      movieInfo.append(watchedButton);
     }});
-
-    function displayMovie() {
-      movieInfo.innerHTML = `
-          <h2>${movieObject.title}</h2>
-          <p>Year: ${movieObject.year}</p>
-          <p>Rating: ${movieObject.ageRating}</p>
-          <p>Director: ${movieObject.director}</p>
-          <p>Starring: ${movieObject.actors}</p>
-          <p>Plot Synopsis: ${movieObject.plot}</p>
-          ${movieObject.criticalRating}
-        `;
-    }

@@ -5,7 +5,7 @@ card.className = "card";
 
 document.addEventListener('DOMContentLoaded', function() {
 if(JSON.parse(localStorage.getItem("savedWatchlist")) != null) {
-    localWatchlist = (JSON.parse(localStorage.getItem("savedWatchlist")));
+    localWatchlist = (JSON.parse(localStorage.getItem("savedWatchlist")).filter(item => item !== null));
     console.log(localWatchlist)
     for(var i=0; i<localWatchlist.length; i++){
         card.innerHTML = `
