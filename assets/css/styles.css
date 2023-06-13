@@ -12,5 +12,36 @@ main {
 
 #sourcesList ul, li {
     list-style-type: none;
-    display: inline;
+    display: flex;
+    flex-direction: row;
+}
+
+#sourcesList ul li {
+    margin-right: 1rem;
+}
+
+.listButtons {
+    font-size: 2rem;
+    border-radius: .5rem;
+    border-style: solid;
+    color: blue;
+    margin: 2rem;
+}
+
+figure img {
+    border-radius: .5rem;
+}
+
+.card {
+    margin: .5rem;
+    justify-content: center;
+    align-items: center;
+    border-radius: 1rem;
+    border-color: black;
+}
+
+.card-img-top {
+    width: 17.9rem;
+    border-radius: 1rem;
+    border-style: solid;
 }
