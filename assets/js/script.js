@@ -182,6 +182,7 @@ function getRecommendations(title) {
   fetch(`https://www.omdbapi.com/?apikey=f26b11a3&s=${encodeURIComponent(title)}`)
     .then(response => response.json())
     .then(data => {
+      console.log(data)
       if (data.Response === "True" && data.Search) {
         const recommendationsContainer = document.getElementById('recommendations');
         recommendationsContainer.innerHTML = '';
@@ -195,7 +196,7 @@ function getRecommendations(title) {
           poster.alt = result.Title;
 
           const title = document.createElement('p');
-          title.textContent = result.Title;
+          title.textContent = result.Title + ` (` + result.Year + `)`;
 
           recommendation.appendChild(poster);
           recommendation.appendChild(title);
