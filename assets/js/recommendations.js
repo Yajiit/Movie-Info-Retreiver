@@ -80,4 +80,4 @@ function getRecommendations(title) {
       const recommendationsContainer = document.getElementById('recommendations');
       recommendationsContainer.innerHTML = `<p>Error: ${error.message}</p>`;
     });
-}
+}}

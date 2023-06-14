@@ -11,32 +11,25 @@
     font-weight:bold;
     margin-left: 24px;
 }
-/* TOP NAV BAR STYLING END   */
-/* main {
+/* TOP NAV BAR STYLING END    */
+
+main {
     margin: 10rem;
-} */
+} 
 
-#moviePoster {
-    margin: 3rem;
-}
-
-/* #moveProfile {
-    margin-top: 3rem;
-} */
-
-/* #sourcesList ul, li {
+#sourcesList ul, li {
     list-style-type: none;
     display: flex;
     flex-direction: row;
-} */
+}
 
 #sourcesList ul li {
     margin-right: 1rem;
 }
-/* 
+
 figure img {
     border-radius: .5rem;
-} */
+}
 
 .card {
     margin: .5rem;
@@ -67,3 +60,11 @@ figure img {
     background: radial-gradient(at top left, #000, #00f);
 }
 /* WATCHLIST BUTTONS STYLING END   */
+
+
+/* Vertical alignment between small and medium screen width to prevent overlap betweren poster and text */
+@media (min-width: 768px) and (max-width: 991px) {
+    #movieProfile {
+        width: 100%;
+    }
+  }
