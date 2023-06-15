@@ -11,8 +11,8 @@ var movieObject;
 
 var watchlistButton = document.createElement('button');
 var watchedButton = document.createElement('button');
-watchlistButton.addEventListener('click', watchlistAdd)
-watchedButton.addEventListener('click', watchedAdd)
+watchlistButton.addEventListener('click', watchlistAdd);
+watchedButton.addEventListener('click', watchedAdd);
 
 watchlistButton.innerHTML = "Add to Watchlist";
 watchedButton.innerHTML = "Add to Watched";
@@ -92,8 +92,12 @@ function watchlistAdd() {
         movieObject = {
           title: data.Title,
           poster: data.Poster,
+          ageRating: data.Rated,
+          actors: data.Actors,
+          criticalRatings: data.Ratings,
           plot: data.Plot,
-          imdbId: data.imdbID
+          imdbId: data.imdbID,
+          year: data.Year
         }
         // creats a template literal string that dynamically replaces any content in the movieInfo with the retrieved JSON data arranged in a readable form
         moviePoster.innerHTML = `<img src="${data.Poster}" alt="${data.Title} Poster">`;
@@ -232,6 +236,17 @@ function getRecommendations(title) {
         Ratings,
         Poster
       } = movieData;
+
+      movieObject = {
+        title: movieData.Title,
+        poster: movieData.Poster,
+        ageRating: movieData.Rated,
+        actors: movieData.Actors,
+        criticalRatings: movieData.Ratings,
+        plot: movieData.Plot,
+        imdbId: movieData.imdbID,
+        year: movieData.Year
+      }
   
       // retrieve the movieInfo element
       const movieInfo = document.getElementById('movieInfo');
