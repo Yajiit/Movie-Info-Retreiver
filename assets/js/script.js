@@ -111,6 +111,7 @@ function watchlistAdd() {
           Year: data.Year
         };
 
+
         displayMovieInfo(movieObject)
       } else { 
         // grabs movieInfo div from html
@@ -174,7 +175,8 @@ function watchlistAdd() {
       });
   }
 
-    // Function to fetch YouTube video
+
+  // Function to fetch YouTube video
 function getTrailer(title) {
   fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(title)}%20trailer&type=video&key=AIzaSyBjlHZovY7E-pNRbyj040cVvcy0jPcF1PI`, {
     method: 'GET',
