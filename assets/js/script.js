@@ -97,7 +97,7 @@ function watchlistAdd() {
           year: data.Year
         }
         // creats a template literal string that dynamically replaces any content in the movieInfo with the retrieved JSON data arranged in a readable form
-        moviePoster.innerHTML = `<img src="${data.Poster}" alt="${data.Title} Poster">`;
+        moviePoster.innerHTML = `<img src="${data.Poster}" alt="${data.Title} Poster" class="poster">`;
 
         movieInfo.innerHTML = `
           <h2>${data.Title}</h2>
@@ -217,7 +217,7 @@ function watchlistAdd() {
       });
   
       // Create the HTML content to display the movie information
-      moviePoster.innerHTML = `<img src="${Poster}" alt="${Title} Poster"> `
+      moviePoster.innerHTML = `<img src="${Poster}" alt="${Title} Poster" class="poster"> `
       const htmlContent = `
         <h2>${Title}</h2>
         <p>Year: ${Year}</p>

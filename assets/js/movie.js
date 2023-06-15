@@ -16,12 +16,14 @@ document.addEventListener('DOMContentLoaded', function() {
       // create a string to display ratings
     let ratingsHTML = "";
       // use foreach to create a line per rating
-    movieData.criticalRatings.forEach(rating => {
-        ratingsHTML += `<p>${rating.Source}: ${rating.Value}</p>`;
-    });
+    if (movieData.criticalRatings.length > 0) {
+        movieData.criticalRatings.forEach(rating => {
+            ratingsHTML += `<p>${rating.Source}: ${rating.Value}</p>`;
+        });
+    }
   
     // Create the HTML content to display the movie information
-    moviePoster.innerHTML = `<img src="${movieData.poster}" alt="${movieData.title} Poster"> `
+    moviePoster.innerHTML = `<img src="${movieData.poster}" alt="${movieData.title} Poster" class="poster"> `
     const htmlContent = `
         <h2>${movieData.title}</h2>
         <p>Year: ${movieData.year}</p>

@@ -1,12 +1,23 @@
+* {
+    font-family: 'Nunito', sans-serif;
+}
+
 main {
-    margin: 10rem;
+    margin-top: 10rem;
 }
 
 #moviePoster {
     margin: 3rem;
 }
 
-#moveProfile {
+.poster {
+    border-radius: 1rem;
+    border-style: solid;
+    border-color: black;
+    margin: none;
+}
+
+#movieProfile {
     margin-top: 3rem;
 }
 
@@ -44,7 +55,7 @@ figure img {
 
 .listPoster {
     width: 18rem;
-    height: 100%;
+    height: 28rem;
     border-radius: 1rem;
     border-style: solid;
     margin: none;
@@ -74,4 +85,15 @@ figure img {
     border-style: solid;
     background-color: none;
     border-radius: 1rem;;
+}
+
+#watched {
+    margin: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#watchlist {
+    margin: 2rem;
 }

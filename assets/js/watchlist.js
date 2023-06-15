@@ -7,7 +7,8 @@ var selectedMovieData;
 card.className = "card";
 
 document.addEventListener('DOMContentLoaded', function() {
-    if(JSON.parse(localStorage.getItem("savedWatchlist")) != null) {
+    console.log(JSON.parse(localStorage.getItem("savedWatchlist")).length)
+    if(JSON.parse(localStorage.getItem("savedWatchlist")).length != 0) {
         localWatchlist = (JSON.parse(localStorage.getItem("savedWatchlist")).filter(item => item !== null));
         console.log(localWatchlist)
         for(var i=0; i<localWatchlist.length; i++){
@@ -19,7 +20,10 @@ document.addEventListener('DOMContentLoaded', function() {
             card.className = "card";
         }
     } else {
-        console.log("didn't work")
+        watchlistEl.innerHTML = `
+        <h2>Nothing to See</h2>
+        <h4>You haven't added anything to your watchlist yet, search some movies you want to watch and save them here</h4>
+        `
     }
     $(".listPoster").click(function(event) {
         event.preventDefault();

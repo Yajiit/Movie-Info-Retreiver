@@ -7,7 +7,7 @@ var selectedMovieData;
 card.className = "card card-custom";
 
 document.addEventListener('DOMContentLoaded', function() {
-    if(JSON.parse(localStorage.getItem("savedWatched")) != null) {
+    if(JSON.parse(localStorage.getItem("savedWatched")).length != 0) {
         localWatched = (JSON.parse(localStorage.getItem("savedWatched")));
         console.log(localWatched)
         for(var i=0; i<localWatched.length; i++){
@@ -19,7 +19,10 @@ document.addEventListener('DOMContentLoaded', function() {
             card.className = "card";
         }
     } else {
-        console.log("didn't work")
+        watchedEl.innerHTML = `
+        <h2>Nothing to See</h2>
+        <h4>You haven't added anything to your watched yet, search some movies you've watched and save them here</h4>
+        `
     }
     $(".listPoster").click(function(event) {
         event.preventDefault();
