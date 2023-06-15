@@ -91,7 +91,7 @@ function watchlistAdd() {
           poster: data.Poster,
           ageRating: data.Rated,
           actors: data.Actors,
-          criticalRating: data.Ratings,
+          criticalRatings: data.Ratings,
           plot: data.Plot,
           imdbId: data.imdbID,
           year: data.Year
@@ -195,6 +195,17 @@ function watchlistAdd() {
         Ratings,
         Poster
       } = movieData;
+
+      movieObject = {
+        title: movieData.Title,
+        poster: movieData.Poster,
+        ageRating: movieData.Rated,
+        actors: movieData.Actors,
+        criticalRatings: movieData.Ratings,
+        plot: movieData.Plot,
+        imdbId: movieData.imdbID,
+        year: movieData.Year
+      }
   
       // retrieve the movieInfo element
       const movieInfo = document.getElementById('movieInfo');
