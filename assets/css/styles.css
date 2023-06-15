@@ -2,6 +2,21 @@
     font-family: 'Nunito', sans-serif;
 }
 
+/* TOP NAV BAR STYLING START */
+.navbar {
+    background: radial-gradient(at top left, #0000ff, #000);
+}
+
+.navbar a {
+    color:#fff;
+}
+
+.navbar-brand {
+    font-weight:bold;
+    margin-left: 24px;
+}
+/* TOP NAV BAR STYLING END    */
+
 main {
     margin-top: 10rem;
 }
@@ -31,14 +46,6 @@ main {
     margin-right: 1rem;
 }
 
-.listButtons {
-    font-size: 2rem;
-    border-radius: .5rem;
-    border-style: solid;
-    color: blue;
-    margin: 2rem;
-}
-
 figure img {
     border-radius: .5rem;
 }
@@ -58,6 +65,7 @@ figure img {
     height: 28rem;
     border-radius: 1rem;
     border-style: solid;
+
     margin: none;
 }
 
@@ -87,6 +95,8 @@ figure img {
     border-radius: 1rem;;
 }
 
+}
+
 #watched {
     margin: 2rem;
     display: flex;
@@ -97,3 +107,27 @@ figure img {
 #watchlist {
     margin: 2rem;
 }
+
+/* WATCHLIST BUTTONS STYLING START */
+.listButtons {
+    font-size: 2rem;
+    border-radius: .5rem;
+    border-style: solid;
+    margin: 2rem;
+    color: #fff;
+    background: radial-gradient(at top left, #0000ff, #000);
+    transition: background 0.3s ease;
+}
+
+.listButtons:hover {
+    background: radial-gradient(at top left, #000, #00f);
+}
+/* WATCHLIST BUTTONS STYLING END   */
+
+
+/* Vertical alignment between small and medium screen width to prevent overlap betweren poster and text */
+@media (min-width: 768px) and (max-width: 991px) {
+    #movieProfile {
+        width: 100%;
+    }
+  }
