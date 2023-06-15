@@ -261,6 +261,7 @@ function getRecommendations(title) {
     // Function to display movie information
 function displayMovieInfo(movie) {
   const movieInfo = document.getElementById('movieInfo');
+  const moviePoster = document.getElementById('moviePoster');
   let ratingsHTML = "";
 
   movieObject = movie;
@@ -271,7 +272,7 @@ function displayMovieInfo(movie) {
     });
   }
 
-  moviePoster.innerHTML = `<img src="${movie.Poster}" alt="${movie.Title} Poster">`;
+  moviePoster.innerHTML = `<img src="${movie.Poster}" alt="${movie.Title} Poster" id="poster">`;
 
   movieInfo.innerHTML = `
     <h2>${movie.Title}</h2>

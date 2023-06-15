@@ -45,4 +45,4 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem("selectedMovie", JSON.stringify(selectedMovieData));
         document.location.href = "movie.html";
     })
-}});
+});
