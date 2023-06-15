@@ -28,22 +28,40 @@ function watchedAdd() {
   if(JSON.parse(localStorage.getItem("savedWatched")) != null) {
     localWatched = (JSON.parse(localStorage.getItem("savedWatched")));
   };
+  let isMovieAlreadyAdded = false;
+  for (let i = 0; i < localWatched.length; i++) {
+    if (localWatched[i].title === movieObject.title) {
+      isMovieAlreadyAdded = true;
+      break;
+    }
+  }
+  if (!isMovieAlreadyAdded){
   watched = localWatched;
   watched.push(movieObject);
   localStorage.setItem("savedWatched", JSON.stringify(watched));
   console.log(watched);
   console.log(localStorage.savedWatched);
 }
+}
 
 function watchlistAdd() {
   if(JSON.parse(localStorage.getItem("savedWatchlist")) != null) {
     localWatchlist = (JSON.parse(localStorage.getItem("savedWatchlist")));
-  };
+  }; 
+  let isMovieAlreadyAdded = false;
+  for (let i = 0; i < localWatchlist.length; i++) {
+    if (localWatchlist[i].title === movieObject.title) {
+      isMovieAlreadyAdded = true;
+      break;
+    }
+  }
+  if (!isMovieAlreadyAdded){
   watchlist = localWatchlist;
   watchlist.push(movieObject);
   localStorage.setItem("savedWatchlist", JSON.stringify(watchlist));
   console.log(watchlist);
   console.log(localStorage.savedWatchlist);
+}
 }
 
   // searchMovie function to fetch movie info
