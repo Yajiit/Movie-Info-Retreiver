@@ -11,8 +11,8 @@ var movieObject;
 
 var watchlistButton = document.createElement('button');
 var watchedButton = document.createElement('button');
-watchlistButton.addEventListener('click', watchlistAdd)
-watchedButton.addEventListener('click', watchedAdd)
+watchlistButton.addEventListener('click', watchlistAdd);
+watchedButton.addEventListener('click', watchedAdd);
 
 watchlistButton.innerHTML = "Add to Watchlist";
 watchedButton.innerHTML = "Add to Watched";
