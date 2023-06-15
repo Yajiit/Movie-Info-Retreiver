@@ -9,10 +9,10 @@ if(JSON.parse(localStorage.getItem("savedWatched")) != null) {
     localWatched = (JSON.parse(localStorage.getItem("savedWatched")));
     console.log(localWatched)
     for(var i=0; i<localWatched.length; i++){
-        card.innerHTML = `<img src=${localWatched[i].poster} class="card-img-top" alt=${localWatched[i].title}>
+        card.innerHTML = `<img src=${localWatched[i].Poster} class="card-img-top" alt=${localWatched[i].Title}>
         <div class="card-body">
-          <h5 class="card-title">${localWatched[i].title}</h5>
-          <p class="card-text">${localWatched[i].plot}</p>
+          <h5 class="card-title">${localWatched[i].Title}</h5>
+          <p class="card-text">${localWatched[i].Plot}</p>
           <a href="#" class="btn btn-primary">See More</a>
         </div>`
         watchedEl.appendChild(card);
