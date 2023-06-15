@@ -75,7 +75,9 @@ function watchlistAdd() {
 
                     // Call the getRecommendations function with the movie title
                     getRecommendations(data.Title);
-  
+                    // Call the getTrailer function with the movie title
+                    getTrailer(data.Title);
+                    
         // grabs the movieInfo <div> and sets as variable
         const movieInfo = document.getElementById('movieInfo');
         // creates a blank string called ratingsHTML to later be filled with a forEarch loop of all the available critic/user ratings
@@ -176,6 +178,40 @@ function watchlistAdd() {
         sourcesList.innerHTML = `<p>Error: ${error.message}</p>`;
       });
   }
+
+  // Function to fetch YouTube video
+function getTrailer(title) {
+  fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(title)}%20trailer&type=video&key=AIzaSyBjlHZovY7E-pNRbyj040cVvcy0jPcF1PI`, {
+    method: 'GET',
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101 Safari/537.36'
+    },
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Failed to fetch trailer from YouTube API.');
+      }
+      return response.json();
+    })
+    .then(data => {
+      if (data.items && data.items.length > 0) {
+        const trailerContainer = document.getElementById('trailerContainer');
+        const videoId = data.items[0].id.videoId; // Assuming the first video is the trailer
+
+        trailerContainer.innerHTML = `
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        `;
+      } else {
+        const trailerContainer = document.getElementById('trailerContainer');
+        trailerContainer.innerHTML = `<p>No trailer found for this title.</p>`;
+      }
+    })
+    .catch(error => {
+      console.log(error);
+      const trailerContainer = document.getElementById('trailerContainer');
+      trailerContainer.innerHTML = `<p>Error: ${error.message}</p>`;
+    });
+}
 
   // Function to fetch recommendations
 function getRecommendations(title) {
