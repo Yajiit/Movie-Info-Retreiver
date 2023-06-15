@@ -11,8 +11,8 @@ var movieObject;
 
 var watchlistButton = document.createElement('button');
 var watchedButton = document.createElement('button');
-watchlistButton.addEventListener('click', watchlistAdd)
-watchedButton.addEventListener('click', watchedAdd)
+watchlistButton.addEventListener('click', watchlistAdd);
+watchedButton.addEventListener('click', watchedAdd);
 
 watchlistButton.innerHTML = "Add to Watchlist";
 watchedButton.innerHTML = "Add to Watched";
@@ -93,12 +93,22 @@ function watchlistAdd() {
 
                     // Call the getRecommendations function with the movie title
                     getRecommendations(data.Title);
+                                        // Call the getTrailer function with the movie title
+                    getTrailer(data.Title);
+                    
+
+
+
   
-        movieObject = {
-          title: data.Title,
-          poster: data.Poster,
-          plot: data.Plot,
-          imdbId: data.imdbID
+     const movieObject = {
+          Title: data.Title,
+          Poster: data.Poster,
+          Rated: data.Rated,
+          Actors: data.Actors,
+          Ratings: data.Ratings,
+          Plot: data.Plot,
+          imdbId: data.imdbID,
+          Year: data.Year
         };
 
         displayMovieInfo(movieObject)
@@ -164,6 +174,40 @@ function watchlistAdd() {
       });
   }
 
+    // Function to fetch YouTube video
+function getTrailer(title) {
+  fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(title)}%20trailer&type=video&key=AIzaSyBjlHZovY7E-pNRbyj040cVvcy0jPcF1PI`, {
+    method: 'GET',
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101 Safari/537.36'
+    },
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Failed to fetch trailer from YouTube API.');
+      }
+      return response.json();
+    })
+    .then(data => {
+      if (data.items && data.items.length > 0) {
+        const trailerContainer = document.getElementById('trailerContainer');
+        const videoId = data.items[0].id.videoId; // Assuming the first video is the trailer
+
+        trailerContainer.innerHTML = `
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        `;
+      } else {
+        const trailerContainer = document.getElementById('trailerContainer');
+        trailerContainer.innerHTML = `<p>No trailer found for this title.</p>`;
+      }
+    })
+    .catch(error => {
+      console.log(error);
+      const trailerContainer = document.getElementById('trailerContainer');
+      trailerContainer.innerHTML = `<p>Error: ${error.message}</p>`;
+    });
+}
+
   // Function to fetch recommendations
 function getRecommendations(title) {
   fetch(`https://www.omdbapi.com/?apikey=f26b11a3&s=${encodeURIComponent(title)}`)
@@ -218,10 +262,12 @@ function displayMovieInfo(movie) {
   let ratingsHTML = "";
 
   movieObject = movie;
-
-  movie.Ratings.forEach(rating => {
-    ratingsHTML += `<p>${rating.Source}: ${rating.Value}</p>`;
-  });
+  console.log(movie)
+  if (movie.Ratings && movie.Ratings.length > 0) {
+    movie.Ratings.forEach(rating => {
+      ratingsHTML += `<p>${rating.Source}: ${rating.Value}</p>`;
+    });
+  }
 
   moviePoster.innerHTML = `<img src="${movie.Poster}" alt="${movie.Title} Poster">`;
 
