@@ -7,6 +7,24 @@
     color:#fff;
 }
 
+a.nav-link {
+    border-radius: 1rem;
+    border-color: white;
+    border-width: 4px;
+}
+
+/* COLOR STYLE FOR THE NAVIGATION TOGGLE BUTTON IN SMALL SCREENS */
+.navbar-toggler {
+    border-color: #000;
+    background-color: #777;
+    color:#fff;
+}
+
+#searchButton {
+    background-color:green;
+    color: #fff
+}
+
 .navbar-brand {
     font-weight:bold;
     margin-left: 24px;
