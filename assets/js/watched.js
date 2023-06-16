@@ -42,4 +42,4 @@ if(JSON.parse(localStorage.getItem("savedWatched")) != null) {
         localStorage.setItem("selectedMovie", JSON.stringify(selectedMovieData));
         document.location.href = "movie.html";
     })
-});
+}});
