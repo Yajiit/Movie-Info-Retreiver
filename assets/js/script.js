@@ -95,10 +95,6 @@ function watchlistAdd() {
                     getRecommendations(data.Title);
                                         // Call the getTrailer function with the movie title
                     getTrailer(data.Title);
-
-
-
-
   
      const movieObject = {
           Title: data.Title,
@@ -305,13 +301,14 @@ function getTrailer(title) {
   
     // check if previous movieData exists in local storage
     if (movieData) {
-
+      displayMovieInfo(movieData);
 // Retrieve the stored mode preference from local storage, if available
 var storedMode = localStorage.getItem('mode');
 if (storedMode === 'dark') {
   enableDarkMode();
 }
-
+  }})
+  
 function toggleMode() {
   var body = document.body;
   var modeToggle = document.getElementById('modeToggle');
@@ -339,9 +336,7 @@ function enableLightMode() {
 
   // Store the mode preference in local storage
   localStorage.setItem('mode', 'light');
-      displayMovieInfo(movieData);
     }
-  }})
     // Function to display movie information
 function displayMovieInfo(movie) {
   const movieInfo = document.getElementById('movieInfo');
