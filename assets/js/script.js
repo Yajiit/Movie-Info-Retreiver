@@ -30,7 +30,7 @@ function watchedAdd() {
   };
   let isMovieAlreadyAdded = false;
   for (let i = 0; i < localWatched.length; i++) {
-    if (localWatched[i].title === movieObject.title) {
+    if (localWatched[i].Title === movieObject.Title) {
       isMovieAlreadyAdded = true;
       break;
     }
@@ -50,18 +50,21 @@ function watchlistAdd() {
   }; 
   let isMovieAlreadyAdded = false;
   for (let i = 0; i < localWatchlist.length; i++) {
-    if (localWatchlist[i].title === movieObject.title) {
+    if (localWatchlist[i].Title === movieObject.Title) {
       isMovieAlreadyAdded = true;
       break;
     }
   }
   if (!isMovieAlreadyAdded){
+  console.log(isMovieAlreadyAdded)
   watchlist = localWatchlist;
   watchlist.push(movieObject);
   localStorage.setItem("savedWatchlist", JSON.stringify(watchlist));
   console.log(watchlist);
   console.log(localStorage.savedWatchlist);
-}
+  } else {
+    console.log("no")
+  }
 }
 
   // searchMovie function to fetch movie info
@@ -272,7 +275,7 @@ function displayMovieInfo(movie) {
     });
   }
 
-  moviePoster.innerHTML = `<img src="${movie.Poster}" alt="${movie.Title} Poster" id="poster">`;
+  moviePoster.innerHTML = `<img src="${movie.Poster}" alt="${movie.Title} Poster" class="poster">`;
 
   movieInfo.innerHTML = `
     <h2>${movie.Title}</h2>

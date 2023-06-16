@@ -4,7 +4,7 @@ var localWatched = [];
 var posterBtn = document.getElementsByClassName('listPoster')
 var selectedMovie;
 var selectedMovieData;
-card.className = "card card-custom";
+card.className = "card";
 
 document.addEventListener('DOMContentLoaded', function() {
     if(JSON.parse(localStorage.getItem("savedWatched")).length != 0) {
@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log(localWatched)
         for(var i=0; i<localWatched.length; i++){
             card.innerHTML = `
-            <input type="image" src=${localWatched[i].poster} class="listPoster" id="${localWatched[i].title}" value=${i}>
+            <input type="image" src=${localWatched[i].Poster} class="listPoster" id="${localWatched[i].Title}" value=${i}>
             `
             watchedEl.appendChild(card);
             card = document.createElement('div');
@@ -30,18 +30,18 @@ document.addEventListener('DOMContentLoaded', function() {
         selectedMovie = $(this).val();
         console.log(selectedMovie);
         selectedMovieData = {
-            title: localWatched[selectedMovie].title,
-            poster: localWatched[selectedMovie].poster,
-            ageRating: localWatched[selectedMovie].ageRating,
-            actors: localWatched[selectedMovie].actors,
-            criticalRatings: localWatched[selectedMovie].criticalRatings,
-            plot: localWatched[selectedMovie].plot,
+            Title: localWatched[selectedMovie].Title,
+            Poster: localWatched[selectedMovie].Poster,
+            Rated: localWatched[selectedMovie].Rated,
+            Actors: localWatched[selectedMovie].Actors,
+            Ratings: localWatched[selectedMovie].Ratings,
+            Plot: localWatched[selectedMovie].Plot,
             imdbId: localWatched[selectedMovie].imdbID,
-            year: localWatched[selectedMovie].year,
+            Year: localWatched[selectedMovie].Year,
             val: selectedMovie
         }
         console.log(selectedMovieData)
         localStorage.setItem("selectedMovie", JSON.stringify(selectedMovieData));
         document.location.href = "movie.html";
     })
-}});
+});

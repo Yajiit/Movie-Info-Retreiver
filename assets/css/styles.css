@@ -18,11 +18,7 @@
 /* TOP NAV BAR STYLING END    */
 
 main {
-    margin-top: 10rem;
-}
-
-#moviePoster {
-    margin: 3rem;
+    margin: 10rem;
 }
 
 .poster {
@@ -30,10 +26,6 @@ main {
     border-style: solid;
     border-color: black;
     margin: none;
-}
-
-#movieProfile {
-    margin-top: 3rem;
 }
 
 #sourcesList ul, li {
@@ -65,7 +57,6 @@ figure img {
     height: 28rem;
     border-radius: 1rem;
     border-style: solid;
-
     margin: none;
 }
 

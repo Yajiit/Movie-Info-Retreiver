@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log(localWatchlist)
         for(var i=0; i<localWatchlist.length; i++){
             card.innerHTML = `
-            <input type="image" src=${localWatchlist[i].poster} class="listPoster" id="${localWatchlist[i].title}" value="${[i]}">
+            <input type="image" src=${localWatchlist[i].Poster} class="listPoster" id="${localWatchlist[i].Title}" value="${[i]}">
             `
             watchlistEl.appendChild(card);
             card = document.createElement('div');
@@ -31,14 +31,14 @@ document.addEventListener('DOMContentLoaded', function() {
         selectedMovie = $(this).val();
         console.log(selectedMovie);
         selectedMovieData = {
-            title: localWatchlist[selectedMovie].title,
-            poster: localWatchlist[selectedMovie].poster,
-            ageRating: localWatchlist[selectedMovie].ageRating,
-            actors: localWatchlist[selectedMovie].actors,
-            criticalRatings: localWatchlist[selectedMovie].criticalRatings,
-            plot: localWatchlist[selectedMovie].plot,
+            Title: localWatchlist[selectedMovie].Title,
+            Poster: localWatchlist[selectedMovie].Poster,
+            Rated: localWatchlist[selectedMovie].Rated,
+            Actors: localWatchlist[selectedMovie].Actors,
+            Ratings: localWatchlist[selectedMovie].Ratings,
+            Plot: localWatchlist[selectedMovie].Plot,
             imdbId: localWatchlist[selectedMovie].imdbID,
-            year: localWatchlist[selectedMovie].year,
+            Year: localWatchlist[selectedMovie].Year,
             val: selectedMovie
         }
         console.log(selectedMovieData)
