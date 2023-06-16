@@ -11,8 +11,8 @@ var movieObject;
 
 var watchlistButton = document.createElement('button');
 var watchedButton = document.createElement('button');
-watchlistButton.addEventListener('click', watchlistAdd)
-watchedButton.addEventListener('click', watchedAdd)
+watchlistButton.addEventListener('click', watchlistAdd);
+watchedButton.addEventListener('click', watchedAdd);
 
 watchlistButton.innerHTML = "Add to Watchlist";
 watchedButton.innerHTML = "Add to Watched";
@@ -28,22 +28,40 @@ function watchedAdd() {
   if(JSON.parse(localStorage.getItem("savedWatched")) != null) {
     localWatched = (JSON.parse(localStorage.getItem("savedWatched")));
   };
+  let isMovieAlreadyAdded = false;
+  for (let i = 0; i < localWatched.length; i++) {
+    if (localWatched[i].title === movieObject.title) {
+      isMovieAlreadyAdded = true;
+      break;
+    }
+  }
+  if (!isMovieAlreadyAdded){
   watched = localWatched;
   watched.push(movieObject);
   localStorage.setItem("savedWatched", JSON.stringify(watched));
   console.log(watched);
   console.log(localStorage.savedWatched);
 }
+}
 
 function watchlistAdd() {
   if(JSON.parse(localStorage.getItem("savedWatchlist")) != null) {
     localWatchlist = (JSON.parse(localStorage.getItem("savedWatchlist")));
-  };
+  }; 
+  let isMovieAlreadyAdded = false;
+  for (let i = 0; i < localWatchlist.length; i++) {
+    if (localWatchlist[i].title === movieObject.title) {
+      isMovieAlreadyAdded = true;
+      break;
+    }
+  }
+  if (!isMovieAlreadyAdded){
   watchlist = localWatchlist;
   watchlist.push(movieObject);
   localStorage.setItem("savedWatchlist", JSON.stringify(watchlist));
   console.log(watchlist);
   console.log(localStorage.savedWatchlist);
+}
 }
 
   // searchMovie function to fetch movie info
@@ -75,48 +93,26 @@ function watchlistAdd() {
 
                     // Call the getRecommendations function with the movie title
                     getRecommendations(data.Title);
-                    // Call the getTrailer function with the movie title
+                                        // Call the getTrailer function with the movie title
                     getTrailer(data.Title);
+
+
+
+
   
-        // grabs the movieInfo <div> and sets as variable
-        const movieInfo = document.getElementById('movieInfo');
-        // creates a blank string called ratingsHTML to later be filled with a forEarch loop of all the available critic/user ratings
-        let ratingsHTML = "";
-        // forEach loop to go over each "Ratings" property in the JSON object data
-        data.Ratings.forEach(rating => {
-          // appends each one to the ratingsHTML string as its own paragraph with the source and score value of each critic/user rating
-          // within the JSON object data property "Ratings" each user/critic score has it's own "Source" and "Value" property stored separately
-          ratingsHTML += `<p>${rating.Source}: ${rating.Value}</p>`;
-        });
+     const movieObject = {
+          Title: data.Title,
+          Poster: data.Poster,
+          Rated: data.Rated,
+          Actors: data.Actors,
+          Ratings: data.Ratings,
+          Plot: data.Plot,
+          imdbId: data.imdbID,
+          Year: data.Year
+        };
 
 
-
-        movieObject = {
-          title: data.Title,
-          poster: data.Poster,
-          plot: data.Plot,
-          imdbId: data.imdbID
-        }
-        // creats a template literal string that dynamically replaces any content in the movieInfo with the retrieved JSON data arranged in a readable form
-        moviePoster.innerHTML = `<img src="${data.Poster}" alt="${data.Title} Poster">`;
-
-        movieInfo.innerHTML = `
-          <h2>${data.Title}</h2>
-          <p>Year: ${data.Year}</p>
-          <p>Rating: ${data.Rated}</p>
-          <p>Director: ${data.Director}</p>
-          <p>Starring: ${data.Actors}</p>
-          <p>Plot Synopsis: ${data.Plot}</p>
-          ${ratingsHTML}
-        `;
-
-        movieInfo.append(watchlistButton);
-        movieInfo.append(watchedButton);
-
-        // applies <h2> tag to the movie Title for CSS styling, then adds a paragraph for each other retrieved JSON data property, including the ratingsHTML assembled earlier
-        // other available properties from omdb api's JSON data include: Runtime, Genre, Writer, Language
-
-        // if the Reponse property of the JSON data is not True then display a not found message
+        displayMovieInfo(movieObject)
       } else { 
         // grabs movieInfo div from html
         const movieInfo = document.getElementById('movieInfo');
@@ -178,6 +174,7 @@ function watchlistAdd() {
         sourcesList.innerHTML = `<p>Error: ${error.message}</p>`;
       });
   }
+
 
   // Function to fetch YouTube video
 function getTrailer(title) {
@@ -308,44 +305,6 @@ function getTrailer(title) {
   
     // check if previous movieData exists in local storage
     if (movieData) {
-      // retrieve info from the movieData
-      const {
-        Title,
-        Year,
-        Rated,
-        Director,
-        Actors,
-        Plot,
-        Ratings,
-        Poster
-      } = movieData;
-  
-      // retrieve the movieInfo element
-      const movieInfo = document.getElementById('movieInfo');
-      // create a string to display ratings
-      let ratingsHTML = "";
-      // use foreach to create a line per rating
-      Ratings.forEach(rating => {
-        ratingsHTML += `<p>${rating.Source}: ${rating.Value}</p>`;
-      });
-  
-      // Create the HTML content to display the movie information
-      moviePoster.innerHTML = `<img src="${Poster}" alt="${Title} Poster"> `
-      const htmlContent = `
-        <h2>${Title}</h2>
-        <p>Year: ${Year}</p>
-        <p>Rating: ${Rated}</p>
-        <p>Director: ${Director}</p>
-        <p>Starring: ${Actors}</p>
-        <p>Plot Synopsis: ${Plot}</p>
-        ${ratingsHTML}
-      `;
-  
-      // Set the HTML content to the movieInfo element
-      movieInfo.innerHTML = htmlContent;
-      movieInfo.append(watchlistButton);
-      movieInfo.append(watchedButton);
-    }});
 
 // Retrieve the stored mode preference from local storage, if available
 var storedMode = localStorage.getItem('mode');
@@ -380,4 +339,34 @@ function enableLightMode() {
 
   // Store the mode preference in local storage
   localStorage.setItem('mode', 'light');
-}
+      displayMovieInfo(movieData);
+    }
+  }})
+    // Function to display movie information
+function displayMovieInfo(movie) {
+  const movieInfo = document.getElementById('movieInfo');
+  let ratingsHTML = "";
+
+  movieObject = movie;
+  console.log(movie)
+  if (movie.Ratings && movie.Ratings.length > 0) {
+    movie.Ratings.forEach(rating => {
+      ratingsHTML += `<p>${rating.Source}: ${rating.Value}</p>`;
+    });
+  }
+
+  moviePoster.innerHTML = `<img src="${movie.Poster}" alt="${movie.Title} Poster">`;
+
+  movieInfo.innerHTML = `
+    <h2>${movie.Title}</h2>
+    <p>Year: ${movie.Year}</p>
+    <p>Rating: ${movie.Rated}</p>
+    <p>Director: ${movie.Director}</p>
+    <p>Starring: ${movie.Actors}</p>
+    <p>Plot Synopsis: ${movie.Plot}</p>
+    ${ratingsHTML}
+  `;
+
+  movieInfo.append(watchlistButton);
+  movieInfo.append(watchedButton);
+  }
