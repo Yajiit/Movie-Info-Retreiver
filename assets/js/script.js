@@ -95,7 +95,7 @@ function watchlistAdd() {
                     getRecommendations(data.Title);
                                         // Call the getTrailer function with the movie title
                     getTrailer(data.Title);
-                    
+
 
 
 
@@ -211,53 +211,137 @@ function getTrailer(title) {
 }
 
   // Function to fetch recommendations
-function getRecommendations(title) {
-  fetch(`https://www.omdbapi.com/?apikey=f26b11a3&s=${encodeURIComponent(title)}`)
-    .then(response => response.json())
-    .then(data => {
-      console.log(data)
-      localStorage.setItem('movieRecommendations', JSON.stringify(data));
-      if (data.Response === "True" && data.Search) {
+  function getRecommendations(title) {
+    fetch(`https://www.omdbapi.com/?apikey=f26b11a3&s=${encodeURIComponent(title)}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.Response === "True" && data.Search) {
+          const recommendationsContainer = document.getElementById('recommendations');
+          recommendationsContainer.innerHTML = '';
+  
+          data.Search.forEach(result => {
+            const recommendation = document.createElement('div');
+            recommendation.classList.add('recommendation');
+            recommendation.addEventListener('click', () => {
+              showMovieDetails(result.imdbID);
+            });
+  
+            const poster = document.createElement('img');
+            poster.src = result.Poster;
+            poster.alt = result.Title;
+            poster.classList.add('poster');
+  
+            const title = document.createElement('p');
+            title.textContent = result.Title + ` (` + result.Year + `)`;
+  
+            const actions = document.createElement('div');
+            actions.classList.add('actions');
+  
+            const watchlistBtn = document.createElement('button');
+            watchlistBtn.textContent = 'Add to Watchlist';
+            watchlistBtn.addEventListener('click', (event) => {
+              event.stopPropagation();
+              addToWatchlist(result);
+            });
+  
+            const watchedBtn = document.createElement('button');
+            watchedBtn.textContent = 'Add to Watched';
+            watchedBtn.addEventListener('click', (event) => {
+              event.stopPropagation();
+              addToWatched(result);
+            });
+  
+            actions.appendChild(watchlistBtn);
+            actions.appendChild(watchedBtn);
+  
+            recommendation.appendChild(poster);
+            recommendation.appendChild(title);
+            recommendation.appendChild(actions);
+  
+            recommendationsContainer.appendChild(recommendation);
+          });
+        } else {
+          const recommendationsContainer = document.getElementById('recommendations');
+          recommendationsContainer.innerHTML = `<p>No recommendations found.</p>`;
+        }
+      })
+      .catch(error => {
+        console.log(error);
         const recommendationsContainer = document.getElementById('recommendations');
-        recommendationsContainer.innerHTML = '';
-
-        data.Search.forEach(result => {
-          const recommendation = document.createElement('div');
-          recommendation.classList.add('recommendation');
-
-          const poster = document.createElement('img');
-          poster.src = result.Poster;
-          poster.alt = result.Title;
-
-          const title = document.createElement('p');
-          title.textContent = result.Title + ` (` + result.Year + `)`;
-
-          recommendation.appendChild(poster);
-          recommendation.appendChild(title);
-          recommendationsContainer.appendChild(recommendation);
-        });
-      } else {
-        const recommendationsContainer = document.getElementById('recommendations');
-        recommendationsContainer.innerHTML = `<p>No recommendations found.</p>`;
-      }
-    })
-    .catch(error => {
-      console.log(error);
-      const recommendationsContainer = document.getElementById('recommendations');
-      recommendationsContainer.innerHTML = `<p>Error: ${error.message}</p>`;
-    });
-}
-
-
+        recommendationsContainer.innerHTML = `<p>Error: ${error.message}</p>`;
+      });
+  }
+  
+  function showMovieDetails(imdbID) {
+    // Implement logic to show movie details using the IMDb ID
+    console.log('Showing details for movie with IMDb ID:', imdbID);
+  }
+  
+  function addToWatchlist(movie) {
+    if(JSON.parse(localStorage.getItem("savedWatchlist")) != null) {
+      localWatchlist = (JSON.parse(localStorage.getItem("savedWatchlist")));
+    };
+    watchlist = localWatchlist;
+    watchlist.push(movieObject);
+    localStorage.setItem("savedWatchlist", JSON.stringify(watchlist));
+    console.log(watchlist);
+    console.log(localStorage.savedWatchlist);
+  } 
+  
+  function addToWatched(movie) {
+    if(JSON.parse(localStorage.getItem("savedWatched")) != null) {
+      localWatched = (JSON.parse(localStorage.getItem("savedWatched")));
+    };
+    watched = localWatched;
+    watched.push(movieObject);
+    localStorage.setItem("savedWatched", JSON.stringify(watched));
+    console.log(watched);
+    console.log(localStorage.savedWatched);
+  }
+  
   document.addEventListener('DOMContentLoaded', function() {
     // retrieve the movieInfo data from local storage
     const movieData = JSON.parse(localStorage.getItem('movieInfo'));
   
     // check if previous movieData exists in local storage
     if (movieData) {
+
+// Retrieve the stored mode preference from local storage, if available
+var storedMode = localStorage.getItem('mode');
+if (storedMode === 'dark') {
+  enableDarkMode();
+}
+
+function toggleMode() {
+  var body = document.body;
+  var modeToggle = document.getElementById('modeToggle');
+
+  if (modeToggle.checked) {
+    enableDarkMode();
+  } else {
+    enableLightMode();
+  }
+}
+
+function enableDarkMode() {
+  var body = document.body;
+  body.style.setProperty('--background-color', 'black');
+  body.style.setProperty('--text-color', 'white');
+
+  // Store the mode preference in local storage
+  localStorage.setItem('mode', 'dark');
+}
+
+function enableLightMode() {
+  var body = document.body;
+  body.style.setProperty('--background-color', 'white');
+  body.style.setProperty('--text-color', 'black');
+
+  // Store the mode preference in local storage
+  localStorage.setItem('mode', 'light');
       displayMovieInfo(movieData);
     }
-  })
+  }})
     // Function to display movie information
 function displayMovieInfo(movie) {
   const movieInfo = document.getElementById('movieInfo');
@@ -285,4 +369,4 @@ function displayMovieInfo(movie) {
 
   movieInfo.append(watchlistButton);
   movieInfo.append(watchedButton);
-}
+  }
