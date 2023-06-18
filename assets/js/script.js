@@ -278,7 +278,7 @@ function getTrailer(title) {
       localWatchlist = (JSON.parse(localStorage.getItem("savedWatchlist")));
     };
     watchlist = localWatchlist;
-    watchlist.push(movieObject);
+    watchlist.push(movie);
     localStorage.setItem("savedWatchlist", JSON.stringify(watchlist));
     console.log(watchlist);
     console.log(localStorage.savedWatchlist);
@@ -289,7 +289,7 @@ function getTrailer(title) {
       localWatched = (JSON.parse(localStorage.getItem("savedWatched")));
     };
     watched = localWatched;
-    watched.push(movieObject);
+    watched.push(movie);
     localStorage.setItem("savedWatched", JSON.stringify(watched));
     console.log(watched);
     console.log(localStorage.savedWatched);
