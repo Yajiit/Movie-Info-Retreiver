@@ -9,9 +9,11 @@ document.addEventListener('DOMContentLoaded', function() {
 if (movieRedirect.get('movieRedirect') === 'true') {
   const infoRedirect = (JSON.parse(localStorage.getItem("movieInfo")));
   const titleRedirect = infoRedirect.Title
+  const imdbRedirect = infoRedirect.imdbId || infoRedirect.imdbID
   console.log(infoRedirect)
   getTrailer(titleRedirect)
   getRecommendations(titleRedirect);
+  // getSources(imdbRedirect);
 }
 });
 
