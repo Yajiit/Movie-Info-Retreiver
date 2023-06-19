@@ -4,6 +4,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const searchButton = document.getElementById('searchButton');
     // when searchButton is clicked execute function searchMovie
     searchButton.addEventListener('click', searchMovie);
+
+    const movieRedirect = new URLSearchParams(window.location.search);
+if (movieRedirect.get('movieRedirect') === 'true') {
+  const infoRedirect = (JSON.parse(localStorage.getItem("movieInfo")));
+  const titleRedirect = infoRedirect.Title
+  console.log(infoRedirect)
+  getTrailer(titleRedirect)
+  getRecommendations(titleRedirect);
+}
 });
 
 var imdbId;
