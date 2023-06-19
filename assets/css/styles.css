@@ -109,13 +109,29 @@ figure img {
 }
 /* WATCHLIST BUTTONS STYLING END   */
 
+/* LIGHT MODE/DARK MODE STYLING START */
 
-/* Vertical alignment between small and medium screen width to prevent overlap betweren poster and text */
-@media (min-width: 768px) and (max-width: 991px) {
-    #movieProfile {
-        width: 100%;
-    }
-  }
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  /* transition: background-color 0.3s ease, color 0.3s ease; */
+}
+
+.light-mode {
+  --background-color: white;
+  --text-color: black;
+}
+
+.dark-mode {
+  --background-color: black;
+  --text-color: white;
+}
+
+
+/* LIGHT MODE/DARK MOED STYLING END   */
+
+
+
   #recommendations {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -150,12 +166,12 @@ figure img {
     margin-right: 5px;
   }
 
-.toggle-container {
+/* .toggle-container {
     position: absolute;
     top: 10px;
     right: 350px;
   }
-  
+   */
   .switch {
     position: relative;
     display: inline-block;
@@ -222,3 +238,18 @@ figure img {
     margin-right: 40px; /* Increase or decrease as needed */
   }
     
+/* SCREEN STYLING FOR SMALL SCREEN */
+@media (max-width: 991px) {
+
+/* Vertical alignment between small and medium screen width to prevent overlap betweren poster and text */
+  #movieProfile {
+      width: 100%;
+  }
+
+  /* lightmode/darkmode button position */
+  .toggle-container {
+    position: absolute;
+    top: 14px;
+    right: 0px;
+  }
+}
