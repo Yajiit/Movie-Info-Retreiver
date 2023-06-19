@@ -1,26 +1,49 @@
 var watchlistEl = document.getElementById("watchlist");
 var card = document.createElement('div');
 var localWatchlist = [];
+var posterBtn = document.getElementsByClassName('listPoster')
+var selectedMovie;
+var selectedMovieData;
 card.className = "card";
-card.setAttribute("style", "width: 18rem;");
 
 document.addEventListener('DOMContentLoaded', function() {
-if(JSON.parse(localStorage.getItem("savedWatchlist")) != null) {
-    localWatchlist = (JSON.parse(localStorage.getItem("savedWatchlist")).filter(item => item !== null));
-    console.log(localWatchlist)
-    for(var i=0; i<localWatchlist.length; i++){
-        card.innerHTML = `<img src=${localWatchlist[i].poster} class="card-img-top" alt=${localWatchlist[i].title}>
-        <div class="card-body">
-          <h5 class="card-title">${localWatchlist[i].title}</h5>
-          <p class="card-text">${localWatchlist[i].plot}</p>
-          <a href="#" class="btn btn-primary">See More</a>
-        </div>`
-        watchlistEl.appendChild(card);
-        card = document.createElement('div');
-        card.className = "card";
-        card.setAttribute("style", "width: 18rem;");
+    console.log(JSON.parse(localStorage.getItem("savedWatchlist")).length)
+    if(JSON.parse(localStorage.getItem("savedWatchlist")).length != 0) {
+        localWatchlist = (JSON.parse(localStorage.getItem("savedWatchlist")).filter(item => item !== null));
+        console.log(localWatchlist)
+        for(var i=0; i<localWatchlist.length; i++){
+            card.innerHTML = `
+            <input type="image" src=${localWatchlist[i].Poster} class="listPoster" id="${localWatchlist[i].Title}" value="${[i]}">
+            `
+            watchlistEl.appendChild(card);
+            card = document.createElement('div');
+            card.className = "card";
+        }
+    } else {
+        watchlistEl.innerHTML = `
+        <h2>Nothing to See</h2>
+        <h4>You haven't added anything to your watchlist yet, search some movies you want to watch and save them here</h4>
+        `
     }
-} else {
-    console.log("didn't work")
-}
+    $(".listPoster").click(function(event) {
+        event.preventDefault();
+        console.log(localWatchlist);
+        selectedMovie = $(this).val();
+        console.log(selectedMovie);
+        selectedMovieData = {
+            Title: localWatchlist[selectedMovie].Title,
+            Poster: localWatchlist[selectedMovie].Poster,
+            Rated: localWatchlist[selectedMovie].Rated,
+            Actors: localWatchlist[selectedMovie].Actors,
+            Ratings: localWatchlist[selectedMovie].Ratings,
+            Plot: localWatchlist[selectedMovie].Plot,
+            imdbID: localWatchlist[selectedMovie].imdbID,
+            imdbId: localWatchlist[selectedMovie].imdbId,
+            Year: localWatchlist[selectedMovie].Year,
+            val: selectedMovie
+        }
+        console.log(selectedMovieData)
+        localStorage.setItem("selectedMovie", JSON.stringify(selectedMovieData));
+        document.location.href = "movie.html";
+    })
 });
