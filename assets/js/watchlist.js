@@ -37,7 +37,8 @@ document.addEventListener('DOMContentLoaded', function() {
             Actors: localWatchlist[selectedMovie].Actors,
             Ratings: localWatchlist[selectedMovie].Ratings,
             Plot: localWatchlist[selectedMovie].Plot,
-            imdbId: localWatchlist[selectedMovie].imdbID,
+            imdbID: localWatchlist[selectedMovie].imdbID,
+            imdbId: localWatchlist[selectedMovie].imdbId,
             Year: localWatchlist[selectedMovie].Year,
             val: selectedMovie
         }

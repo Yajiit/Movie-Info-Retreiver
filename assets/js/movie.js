@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // retrieve the movieInfo data from local storage
     const movieData = JSON.parse(localStorage.getItem('selectedMovie'));
     console.log(movieData)
-
     const val = movieData.val
   
       // retrieve the movieInfo element
@@ -28,16 +27,37 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   
     // Create the HTML content to display the movie information
-    moviePoster.innerHTML = `<img src="${movieData.Poster}" alt="${movieData.Title} Poster" class="poster"> `
-    const htmlContent = `
-        <h2>${movieData.Title}</h2>
-        <p>Year: ${movieData.Year}</p>
-        <p>Rating: ${movieData.Rated}</p>
-        <p>Director: ${movieData.Director}</p>
-        <p>Starring: ${movieData.Actors}</p>
-        <p>Plot Synopsis: ${movieData.Plot}</p>
-        ${ratingsHTML}
-    `;
+    let imdbID = movieData.imdbId || movieData.imdbID;
+    let moviePosterHTML = '';
+    if (imdbID) {
+      moviePosterHTML = `
+        <a href="#" onclick="fetchAdditionalMovieData('${imdbID}')">
+          <img src="${movieData.Poster}" alt="${movieData.Title} Poster" class="poster">
+        </a>
+      `;
+    } else {
+      moviePosterHTML = `<img src="${movieData.Poster}" alt="${movieData.Title} Poster" class="poster">`;
+    }
+    
+    moviePoster.innerHTML = moviePosterHTML;
+    let htmlContent = `<h2>${movieData.Title}</h2>`;
+
+    if (movieData.Year) {
+      htmlContent += `<p>Year: ${movieData.Year}</p>`;
+    }
+    if (movieData.Rated) {
+      htmlContent += `<p>Rating: ${movieData.Rated}</p>`;
+    }
+    if (movieData.Director) {
+      htmlContent += `<p>Director: ${movieData.Director}</p>`;
+    }
+    if (movieData.Actors) {
+      htmlContent += `<p>Starring: ${movieData.Actors}</p>`;
+    }
+    if (movieData.Plot) {
+      htmlContent += `<p>Plot Synopsis: ${movieData.Plot}</p>`;
+    }
+    htmlContent += ratingsHTML;
 
     const savedWatchlist = localStorage.getItem("savedWatchlist");
     const savedWatched = localStorage.getItem("savedWatched");
@@ -107,3 +127,18 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 });
+
+function fetchAdditionalMovieData(imdbID) {
+    fetch(`https://www.omdbapi.com/?i=${imdbID}&apikey=f26b11a3`)
+      .then(response => response.json())
+      .then(data => {
+        // Add the additional movie data to selectedMovie in local storage
+        localStorage.setItem('movieInfo', JSON.stringify(data));
+        console.log(data)
+        // Redirect back to index.html
+        window.location.href = 'index.html?movieRedirect=true';      })
+      .catch(error => {
+        // Handle any errors that occur during the fetch request
+        console.error('Error:', error);
+      });
+  }
