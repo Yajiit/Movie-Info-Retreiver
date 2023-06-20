@@ -166,12 +166,6 @@ body {
     margin-right: 5px;
   }
 
-/* .toggle-container {
-    position: absolute;
-    top: 10px;
-    right: 350px;
-  }
-   */
   .switch {
     position: relative;
     display: inline-block;
@@ -227,6 +221,31 @@ body {
   
   .slider.round:before {
     border-radius: 50%;
+  }
+  
+  .spaced {
+    margin-bottom: 20px;
+  }
+  
+  .poster-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .listPoster {
+    margin-bottom: 10px;
+  }
+  
+  .watchedButton {
+    width: 100%;
+  }
+  .removeButton {
+    width: 100%;
+    background-color: red;
+  }
+  .watchAgainBtn {
+    width: 100%;
   }
   
   /* Adjust the position of the search bar */

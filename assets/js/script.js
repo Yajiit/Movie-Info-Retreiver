@@ -55,6 +55,7 @@ function watchedAdd() {
 }
 }
 
+
 function watchlistAdd() {
   if(JSON.parse(localStorage.getItem("savedWatchlist")) != null) {
     localWatchlist = (JSON.parse(localStorage.getItem("savedWatchlist")));
@@ -267,7 +268,7 @@ function getTrailer(title) {
             recommendation.appendChild(actions);
   
             recommendationsContainer.appendChild(recommendation);
-          }
+
             console.log(result)
           });
         } else {
