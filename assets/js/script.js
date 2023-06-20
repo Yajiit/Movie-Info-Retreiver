@@ -55,6 +55,7 @@ function watchedAdd() {
 }
 }
 
+
 function watchlistAdd() {
   if(JSON.parse(localStorage.getItem("savedWatchlist")) != null) {
     localWatchlist = (JSON.parse(localStorage.getItem("savedWatchlist")));
@@ -227,6 +228,7 @@ function getTrailer(title) {
           recommendationsContainer.innerHTML = '';
   
           data.Search.forEach(result => {
+            if (result.Title !== title){
             const recommendation = document.createElement('div');
             recommendation.classList.add('recommendation');
             recommendation.addEventListener('click', () => {
@@ -266,9 +268,10 @@ function getTrailer(title) {
             recommendation.appendChild(actions);
   
             recommendationsContainer.appendChild(recommendation);
+          }
 
             console.log(result)
-          });
+      });
         } else {
           const recommendationsContainer = document.getElementById('recommendations');
           recommendationsContainer.innerHTML = `<p>No recommendations found.</p>`;
