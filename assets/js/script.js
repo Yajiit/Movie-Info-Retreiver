@@ -20,8 +20,10 @@ if (movieRedirect.get('movieRedirect') === 'true') {
 var imdbId;
 var movieObject;
 
+var showmoreButton = document.createElement('button');
 var watchlistButton = document.createElement('button');
 var watchedButton = document.createElement('button');
+showmoreButton.addEventListener('click', showmore);
 watchlistButton.addEventListener('click', watchlistAdd);
 watchedButton.addEventListener('click', watchedAdd);
 
@@ -84,9 +86,13 @@ function watchlistAdd() {
     const input = document.getElementById('searchInput');
     // grabs the entered text value from the input and sets it as query
     const query = input.value;
+   
+    fetchSearch(query)
+  }
   
+    function fetchSearch(search) {
     // fetch through omdb api
-    fetch(`https://www.omdbapi.com/?apikey=f26b11a3&t=${query}`)
+    fetch(`https://www.omdbapi.com/?apikey=f26b11a3&t=${search}`)
     // take the response and parse w JSON
       .then(response => response.json())
       // take the parsed response and runs as "data"
@@ -133,7 +139,7 @@ function watchlistAdd() {
     .catch(error => {
       console.log(error);
     });
-}
+  };
   
   // Function to fetch sources using Watchmode API
   function getSources(titleId) {
@@ -252,6 +258,14 @@ function getTrailer(title) {
               event.stopPropagation();
               addToWatchlist(result);
             });
+
+            const showmoreBtn = document.createElement('button');
+            showmoreBtn.textContent = ('Show More');
+            showmoreBtn.addEventListener('click', (event) => {
+              event.stopPropagation();
+              showmore(result);
+            });
+            
   
             const watchedBtn = document.createElement('button');
             watchedBtn.textContent = 'Add to Watched';
@@ -262,6 +276,7 @@ function getTrailer(title) {
   
             actions.appendChild(watchlistBtn);
             actions.appendChild(watchedBtn);
+            actions.appendChild(showmoreBtn);
   
             recommendation.appendChild(poster);
             recommendation.appendChild(title);
@@ -321,6 +336,17 @@ function getTrailer(title) {
 
   }})
   
+//function to show more about recommended movie
+
+function showmore(event) {
+  console.log(event)
+  // prevent form submission
+  // event.preventDefault();
+  // grabs the title from movie and sets it as variable called input
+  const query = event.Title
+  // grabs the entered text value from the input and sets it as query
+  fetchSearch(query)
+}
 
     // Function to display movie information
 function displayMovieInfo(movie) {
