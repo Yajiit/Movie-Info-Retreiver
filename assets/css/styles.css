@@ -251,6 +251,7 @@ body {
   
   .watchedButton {
     width: 100%;
+    background-color: limegreen;
   }
   .removeButton {
     width: 100%;
@@ -258,6 +259,7 @@ body {
   }
   .watchAgainBtn {
     width: 100%;
+    background-color: blue;
   }
   
   /* Adjust the position of the search bar */
