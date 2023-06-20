@@ -4,6 +4,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const searchButton = document.getElementById('searchButton');
     // when searchButton is clicked execute function searchMovie
     searchButton.addEventListener('click', searchMovie);
+
+    const movieRedirect = new URLSearchParams(window.location.search);
+if (movieRedirect.get('movieRedirect') === 'true') {
+  const infoRedirect = (JSON.parse(localStorage.getItem("movieInfo")));
+  const titleRedirect = infoRedirect.Title
+  const imdbRedirect = infoRedirect.imdbId || infoRedirect.imdbID
+  console.log(infoRedirect)
+  getTrailer(titleRedirect)
+  getRecommendations(titleRedirect);
+  // getSources(imdbRedirect);
+}
 });
 
 var imdbId;
@@ -44,13 +55,14 @@ function watchedAdd() {
 }
 }
 
+
 function watchlistAdd() {
   if(JSON.parse(localStorage.getItem("savedWatchlist")) != null) {
     localWatchlist = (JSON.parse(localStorage.getItem("savedWatchlist")));
   }; 
   let isMovieAlreadyAdded = false;
   for (let i = 0; i < localWatchlist.length; i++) {
-    if (localWatchlist[i].title === movieObject.title) {
+    if (localWatchlist[i].Title === movieObject.Title) {
       isMovieAlreadyAdded = true;
       break;
     }
@@ -95,10 +107,6 @@ function watchlistAdd() {
                     getRecommendations(data.Title);
                                         // Call the getTrailer function with the movie title
                     getTrailer(data.Title);
-
-
-
-
   
      const movieObject = {
           Title: data.Title,
@@ -259,6 +267,8 @@ function getTrailer(title) {
             recommendation.appendChild(actions);
   
             recommendationsContainer.appendChild(recommendation);
+
+            console.log(result)
           });
         } else {
           const recommendationsContainer = document.getElementById('recommendations');
@@ -282,7 +292,7 @@ function getTrailer(title) {
       localWatchlist = (JSON.parse(localStorage.getItem("savedWatchlist")));
     };
     watchlist = localWatchlist;
-    watchlist.push(movieObject);
+    watchlist.push(movie);
     localStorage.setItem("savedWatchlist", JSON.stringify(watchlist));
     console.log(watchlist);
     console.log(localStorage.savedWatchlist);
@@ -293,7 +303,7 @@ function getTrailer(title) {
       localWatched = (JSON.parse(localStorage.getItem("savedWatched")));
     };
     watched = localWatched;
-    watched.push(movieObject);
+    watched.push(movie);
     localStorage.setItem("savedWatched", JSON.stringify(watched));
     console.log(watched);
     console.log(localStorage.savedWatched);
@@ -305,43 +315,11 @@ function getTrailer(title) {
   
     // check if previous movieData exists in local storage
     if (movieData) {
-
-// Retrieve the stored mode preference from local storage, if available
-var storedMode = localStorage.getItem('mode');
-if (storedMode === 'dark') {
-  enableDarkMode();
-}
-
-function toggleMode() {
-  var body = document.body;
-  var modeToggle = document.getElementById('modeToggle');
-
-  if (modeToggle.checked) {
-    enableDarkMode();
-  } else {
-    enableLightMode();
-  }
-}
-
-function enableDarkMode() {
-  var body = document.body;
-  body.style.setProperty('--background-color', 'black');
-  body.style.setProperty('--text-color', 'white');
-
-  // Store the mode preference in local storage
-  localStorage.setItem('mode', 'dark');
-}
-
-function enableLightMode() {
-  var body = document.body;
-  body.style.setProperty('--background-color', 'white');
-  body.style.setProperty('--text-color', 'black');
-
-  // Store the mode preference in local storage
-  localStorage.setItem('mode', 'light');
       displayMovieInfo(movieData);
-    }
+
   }})
+  
+
     // Function to display movie information
 function displayMovieInfo(movie) {
   const movieInfo = document.getElementById('movieInfo');
