@@ -227,6 +227,7 @@ function getTrailer(title) {
           recommendationsContainer.innerHTML = '';
   
           data.Search.forEach(result => {
+            if (result.Title !== title){
             const recommendation = document.createElement('div');
             recommendation.classList.add('recommendation');
             recommendation.addEventListener('click', () => {
@@ -266,7 +267,7 @@ function getTrailer(title) {
             recommendation.appendChild(actions);
   
             recommendationsContainer.appendChild(recommendation);
-
+          }
             console.log(result)
           });
         } else {
