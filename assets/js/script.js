@@ -86,9 +86,13 @@ function watchlistAdd() {
     const input = document.getElementById('searchInput');
     // grabs the entered text value from the input and sets it as query
     const query = input.value;
+   
+    fetchSearch(query)
+  }
   
+    function fetchSearch(search) {
     // fetch through omdb api
-    fetch(`https://www.omdbapi.com/?apikey=f26b11a3&t=${query}`)
+    fetch(`https://www.omdbapi.com/?apikey=f26b11a3&t=${search}`)
     // take the response and parse w JSON
       .then(response => response.json())
       // take the parsed response and runs as "data"
@@ -135,7 +139,7 @@ function watchlistAdd() {
     .catch(error => {
       console.log(error);
     });
-}
+  };
   
   // Function to fetch sources using Watchmode API
   function getSources(titleId) {
@@ -335,61 +339,13 @@ function getTrailer(title) {
 //function to show more about recommended movie
 
 function showmore(event) {
+  console.log(event)
   // prevent form submission
-  event.preventDefault();
+  // event.preventDefault();
   // grabs the title from movie and sets it as variable called input
-  const input = document.getElementById(data.title);
+  const query = event.Title
   // grabs the entered text value from the input and sets it as query
-  const query = input.value;
-
-  // fetch through omdb api
-  fetch(`https://www.omdbapi.com/?apikey=f26b11a3&t=${query}`)
-  // take the response and parse w JSON
-    .then(response => response.json())
-    // take the parsed response and runs as "data"
-    .then(data => {
-      // omdb api's parsed JSON object has a "Response" property that will return as "True" when a valid title is searched.
-      // we can check the data.Response property to see if a valid movie was found 
-      if (data.Response === "True") {
-     // saves JSON response to local storage
-      localStorage.setItem('movieInfo', JSON.stringify(data));
-        // Retrieve the IMDB ID. This will be used for the Watchmode api's fetch
-        const imdbId = data.imdbID;
-
-        // DISABLED TO SAVE API USES
-        // Call the getSources function with the IMDB ID
-        // getSources(imdbId);
-
-                  // Call the getRecommendations function with the movie title
-                  getRecommendations(data.Title);
-                                      // Call the getTrailer function with the movie title
-                  getTrailer(data.Title);
-
-   const movieObject = {
-        Title: data.Title,
-        Poster: data.Poster,
-        Rated: data.Rated,
-        Actors: data.Actors,
-        Ratings: data.Ratings,
-        Plot: data.Plot,
-        imdbId: data.imdbID,
-        Year: data.Year
-      };
-
-
-      displayMovieInfo(movieObject)
-    } else { 
-      // grabs movieInfo div from html
-      const movieInfo = document.getElementById('movieInfo');
-      // sets content of movieInfo to Movie not found message
-      movieInfo.innerHTML = `<p>Movie not found!</p>`;
-    }
-  })
-
-  // if an error is caught during the fetch then log it to the console
-  .catch(error => {
-    console.log(error);
-  });
+  fetchSearch(query)
 }
 
     // Function to display movie information
