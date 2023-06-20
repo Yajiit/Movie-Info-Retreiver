@@ -107,7 +107,7 @@ function watchlistAdd() {
   
           // DISABLED TO SAVE API USES
           // Call the getSources function with the IMDB ID
-          // getSources(imdbId);
+          getSources(imdbId);
 
                     // Call the getRecommendations function with the movie title
                     getRecommendations(data.Title);
@@ -153,6 +153,23 @@ function watchlistAdd() {
       localStorage.setItem('sources', JSON.stringify(data));
         console.log(data); // Logs the response data to the console
   
+        let link = data.trailer
+          // Regular expression to match different YouTube URL formats
+          var regex = /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/|v\/)|youtu\.be\/)([^\s&?\/]+)/;
+          
+          var match = link.match(regex);
+          if (match && match[1]) {
+            var videoId = match[1];
+            var embeddedLink = 'https://www.youtube.com/embed/' + videoId;
+          
+          
+        trailerContainer.innerHTML = `
+        <iframe width="560" height="315" src="${embeddedLink}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      `;
+    } else {
+      const trailerContainer = document.getElementById('trailerContainer');
+      trailerContainer.innerHTML = `<p>No trailer found for this title.</p>`;
+    }
       // if conditional to check that there are more than zero sources fetched
       if (data.sources && data.sources.length > 0) {
         // assigns array of streaming sources from data to variable "sources"
@@ -189,40 +206,6 @@ function watchlistAdd() {
       });
   }
 
-
-  // Function to fetch YouTube video
-function getTrailer(title) {
-  fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(title)}%20trailer&type=video&key=AIzaSyBjlHZovY7E-pNRbyj040cVvcy0jPcF1PI`, {
-    method: 'GET',
-    headers: {
-      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101 Safari/537.36'
-    },
-  })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Failed to fetch trailer from YouTube API.');
-      }
-      return response.json();
-    })
-    .then(data => {
-      if (data.items && data.items.length > 0) {
-        const trailerContainer = document.getElementById('trailerContainer');
-        const videoId = data.items[0].id.videoId; // Assuming the first video is the trailer
-
-        trailerContainer.innerHTML = `
-          <iframe width="560" height="315" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        `;
-      } else {
-        const trailerContainer = document.getElementById('trailerContainer');
-        trailerContainer.innerHTML = `<p>No trailer found for this title.</p>`;
-      }
-    })
-    .catch(error => {
-      console.log(error);
-      const trailerContainer = document.getElementById('trailerContainer');
-      trailerContainer.innerHTML = `<p>Error: ${error.message}</p>`;
-    });
-}
 
   // Function to fetch recommendations
   function getRecommendations(title) {
@@ -369,7 +352,7 @@ function displayMovieInfo(movie) {
     <p>Rating: ${movie.Rated}</p>
     <p>Director: ${movie.Director}</p>
     <p>Starring: ${movie.Actors}</p>
-    <p>Plot Synopsis: ${movie.Plot}</p>
+    <p id="plot">${movie.Plot}</p>
     ${ratingsHTML}
   `;
 
