@@ -268,9 +268,10 @@ function getTrailer(title) {
             recommendation.appendChild(actions);
   
             recommendationsContainer.appendChild(recommendation);
+          }
 
             console.log(result)
-          });
+      });
         } else {
           const recommendationsContainer = document.getElementById('recommendations');
           recommendationsContainer.innerHTML = `<p>No recommendations found.</p>`;
