@@ -228,6 +228,7 @@ function getTrailer(title) {
           recommendationsContainer.innerHTML = '';
   
           data.Search.forEach(result => {
+            if (result.Title !== title){
             const recommendation = document.createElement('div');
             recommendation.classList.add('recommendation');
             recommendation.addEventListener('click', () => {
