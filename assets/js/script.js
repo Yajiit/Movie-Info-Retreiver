@@ -102,18 +102,8 @@ function watchlistAdd() {
         if (data.Response === "True") {
        // saves JSON response to local storage
         localStorage.setItem('movieInfo', JSON.stringify(data));
-          // Retrieve the IMDB ID. This will be used for the Watchmode api's fetch
-          const imdbId = data.imdbID;
-  
-          // DISABLED TO SAVE API USES
-          // Call the getSources function with the IMDB ID
-          getSources(imdbId);
 
-                    // Call the getRecommendations function with the movie title
-                    getRecommendations(data.Title);
-                                        // Call the getTrailer function with the movie title
-                    getTrailer(data.Title);
-  
+          
      const movieObject = {
           Title: data.Title,
           Poster: data.Poster,
@@ -128,6 +118,20 @@ function watchlistAdd() {
 
 
         displayMovieInfo(movieObject)
+        
+          // Retrieve the IMDB ID. This will be used for the Watchmode api's fetch
+          const imdbId = data.imdbID;
+  
+          // DISABLED TO SAVE API USES
+          // Call the getSources function with the IMDB ID
+          getSources(imdbId);
+
+                    // Call the getRecommendations function with the movie title
+                    getRecommendations(data.Title);
+                                        // Call the getTrailer function with the movie title
+                    getTrailer(data.Title);
+
+
       } else { 
         // grabs movieInfo div from html
         const movieInfo = document.getElementById('movieInfo');
