@@ -118,7 +118,7 @@ function watchlistAdd() {
 
 
         displayMovieInfo(movieObject)
-        
+
           // Retrieve the IMDB ID. This will be used for the Watchmode api's fetch
           const imdbId = data.imdbID;
   
@@ -149,7 +149,7 @@ function watchlistAdd() {
   // Function to fetch sources using Watchmode API
   function getSources(titleId) {
     // puts the imdb titleID into a fetch request
-    fetch(`https://api.watchmode.com/v1/title/${titleId}/details/?apiKey=WPmG7Zz5vHjq40wGf0WSfvoq2z6F38BSqO3r9xPe&append_to_response=sources`)
+    fetch(`https://api.watchmode.com/v1/title/${titleId}/details/?apiKey=LUmK2WAiWJR8BF6tAhOxojro3eqf8Jhglcsp1ZCK&append_to_response=sources`)
     // parses resopnse as JSON object
       .then(response => response.json())
       // runs that JSON response object as data
