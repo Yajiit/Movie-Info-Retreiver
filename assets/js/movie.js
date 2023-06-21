@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // retrieve the movieInfo data from local storage
     const movieData = JSON.parse(localStorage.getItem('selectedMovie'));
     console.log(movieData)
-
     const val = movieData.val
   
       // retrieve the movieInfo element
@@ -21,21 +20,21 @@ document.addEventListener('DOMContentLoaded', function() {
       // create a string to display ratings
     let ratingsHTML = "";
       // use foreach to create a line per rating
-    if (movieData.Ratings.length > 0) {
+    if (movieData.Ratings && movieData.Ratings.length > 0) {
         movieData.Ratings.forEach(rating => {
             ratingsHTML += `<p>${rating.Source}: ${rating.Value}</p>`;
         });
     }
   
     // Create the HTML content to display the movie information
-    moviePoster.innerHTML = `<img src="${movieData.Poster}" alt="${movieData.Title} Poster" class="poster"> `
+    moviePoster.innerHTML = `<img src="${movieData.poster}" alt="${movieData.title} Poster"> `
     const htmlContent = `
-        <h2>${movieData.Title}</h2>
-        <p>Year: ${movieData.Year}</p>
-        <p>Rating: ${movieData.Rated}</p>
-        <p>Director: ${movieData.Director}</p>
-        <p>Starring: ${movieData.Actors}</p>
-        <p>Plot Synopsis: ${movieData.Plot}</p>
+        <h2>${movieData.title}</h2>
+        <p>Year: ${movieData.year}</p>
+        <p>Rating: ${movieData.rating}</p>
+        <p>Director: ${movieData.director}</p>
+        <p>Starring: ${movieData.actors}</p>
+        <p>Plot Synopsis: ${movieData.plot}</p>
         ${ratingsHTML}
     `;
 
@@ -89,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function watchlistRemove() {
         if(JSON.parse(localStorage.getItem("savedWatchlist")).length != 0){
-            for (i=0; i<localWatched.length; i++) {
+            for (i=0; i<localWatchlist.length; i++) {
                 if (localWatchlist[i].Title == movieData.Title) {
                     localWatchlist.splice(i, 1);
                     localStorage.setItem("savedWatchlist", JSON.stringify(localWatchlist));
@@ -100,3 +99,18 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 });
+
+function fetchAdditionalMovieData(imdbID) {
+    fetch(`https://www.omdbapi.com/?i=${imdbID}&apikey=f26b11a3`)
+      .then(response => response.json())
+      .then(data => {
+        // Add the additional movie data to selectedMovie in local storage
+        localStorage.setItem('movieInfo', JSON.stringify(data));
+        console.log(data)
+        // Redirect back to index.html
+        window.location.href = 'index.html?movieRedirect=true';      })
+      .catch(error => {
+        // Handle any errors that occur during the fetch request
+        console.error('Error:', error);
+      });
+  }

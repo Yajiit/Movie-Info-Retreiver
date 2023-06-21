@@ -4,13 +4,26 @@ document.addEventListener('DOMContentLoaded', function() {
     const searchButton = document.getElementById('searchButton');
     // when searchButton is clicked execute function searchMovie
     searchButton.addEventListener('click', searchMovie);
+
+    const movieRedirect = new URLSearchParams(window.location.search);
+if (movieRedirect.get('movieRedirect') === 'true') {
+  const infoRedirect = (JSON.parse(localStorage.getItem("movieInfo")));
+  const titleRedirect = infoRedirect.Title
+  const imdbRedirect = infoRedirect.imdbId || infoRedirect.imdbID
+  console.log(infoRedirect)
+  getTrailer(titleRedirect)
+  getRecommendations(titleRedirect);
+  // getSources(imdbRedirect);
+}
 });
 
 var imdbId;
 var movieObject;
 
+var showmoreButton = document.createElement('button');
 var watchlistButton = document.createElement('button');
 var watchedButton = document.createElement('button');
+showmoreButton.addEventListener('click', showmore);
 watchlistButton.addEventListener('click', watchlistAdd);
 watchedButton.addEventListener('click', watchedAdd);
 
@@ -44,6 +57,7 @@ function watchedAdd() {
 }
 }
 
+
 function watchlistAdd() {
   if(JSON.parse(localStorage.getItem("savedWatchlist")) != null) {
     localWatchlist = (JSON.parse(localStorage.getItem("savedWatchlist")));
@@ -75,9 +89,13 @@ function watchlistAdd() {
     const input = document.getElementById('searchInput');
     // grabs the entered text value from the input and sets it as query
     const query = input.value;
+   
+    fetchSearch(query)
+  }
   
+    function fetchSearch(search) {
     // fetch through omdb api
-    fetch(`https://www.omdbapi.com/?apikey=f26b11a3&t=${query}`)
+    fetch(`https://www.omdbapi.com/?apikey=f26b11a3&t=${search}`)
     // take the response and parse w JSON
       .then(response => response.json())
       // take the parsed response and runs as "data"
@@ -92,16 +110,12 @@ function watchlistAdd() {
   
           // DISABLED TO SAVE API USES
           // Call the getSources function with the IMDB ID
-          // getSources(imdbId);
+          getSources(imdbId);
 
                     // Call the getRecommendations function with the movie title
                     getRecommendations(data.Title);
                                         // Call the getTrailer function with the movie title
                     getTrailer(data.Title);
-                    
-
-
-
   
      const movieObject = {
           Title: data.Title,
@@ -128,7 +142,7 @@ function watchlistAdd() {
     .catch(error => {
       console.log(error);
     });
-}
+  };
   
   // Function to fetch sources using Watchmode API
   function getSources(titleId) {
@@ -142,6 +156,23 @@ function watchlistAdd() {
       localStorage.setItem('sources', JSON.stringify(data));
         console.log(data); // Logs the response data to the console
   
+        let link = data.trailer
+          // Regular expression to match different YouTube URL formats
+          var regex = /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/|v\/)|youtu\.be\/)([^\s&?\/]+)/;
+          
+          var match = link.match(regex);
+          if (match && match[1]) {
+            var videoId = match[1];
+            var embeddedLink = 'https://www.youtube.com/embed/' + videoId;
+          
+          
+        trailerContainer.innerHTML = `
+        <iframe width="560" height="315" src="${embeddedLink}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      `;
+    } else {
+      const trailerContainer = document.getElementById('trailerContainer');
+      trailerContainer.innerHTML = `<p>No trailer found for this title.</p>`;
+    }
       // if conditional to check that there are more than zero sources fetched
       if (data.sources && data.sources.length > 0) {
         // assigns array of streaming sources from data to variable "sources"
@@ -179,79 +210,108 @@ function watchlistAdd() {
   }
 
 
-  // Function to fetch YouTube video
-function getTrailer(title) {
-  fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(title)}%20trailer&type=video&key=AIzaSyBjlHZovY7E-pNRbyj040cVvcy0jPcF1PI`, {
-    method: 'GET',
-    headers: {
-      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101 Safari/537.36'
-    },
-  })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Failed to fetch trailer from YouTube API.');
-      }
-      return response.json();
-    })
-    .then(data => {
-      if (data.items && data.items.length > 0) {
-        const trailerContainer = document.getElementById('trailerContainer');
-        const videoId = data.items[0].id.videoId; // Assuming the first video is the trailer
-
-        trailerContainer.innerHTML = `
-          <iframe width="560" height="315" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        `;
-      } else {
-        const trailerContainer = document.getElementById('trailerContainer');
-        trailerContainer.innerHTML = `<p>No trailer found for this title.</p>`;
-      }
-    })
-    .catch(error => {
-      console.log(error);
-      const trailerContainer = document.getElementById('trailerContainer');
-      trailerContainer.innerHTML = `<p>Error: ${error.message}</p>`;
-    });
-}
-
   // Function to fetch recommendations
-function getRecommendations(title) {
-  fetch(`https://www.omdbapi.com/?apikey=f26b11a3&s=${encodeURIComponent(title)}`)
-    .then(response => response.json())
-    .then(data => {
-      console.log(data)
-      localStorage.setItem('movieRecommendations', JSON.stringify(data));
-      if (data.Response === "True" && data.Search) {
+  function getRecommendations(title) {
+    fetch(`https://www.omdbapi.com/?apikey=f26b11a3&s=${encodeURIComponent(title)}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.Response === "True" && data.Search) {
+          const recommendationsContainer = document.getElementById('recommendations');
+          recommendationsContainer.innerHTML = '';
+  
+          data.Search.forEach(result => {
+            if (result.Title !== title){
+            const recommendation = document.createElement('div');
+            recommendation.classList.add('recommendation');
+            recommendation.addEventListener('click', () => {
+              showMovieDetails(result.imdbID);
+            });
+  
+            const poster = document.createElement('img');
+            poster.src = result.Poster;
+            poster.alt = result.Title;
+            poster.classList.add('poster');
+  
+            const title = document.createElement('p');
+            title.textContent = result.Title + ` (` + result.Year + `)`;
+  
+            const actions = document.createElement('div');
+            actions.classList.add('actions');
+  
+            const watchlistBtn = document.createElement('button');
+            watchlistBtn.textContent = 'Add to Watchlist';
+            watchlistBtn.addEventListener('click', (event) => {
+              event.stopPropagation();
+              addToWatchlist(result);
+            });
+
+            const showmoreBtn = document.createElement('button');
+            showmoreBtn.textContent = ('Show More');
+            showmoreBtn.addEventListener('click', (event) => {
+              event.stopPropagation();
+              showmore(result);
+            });
+            
+  
+            const watchedBtn = document.createElement('button');
+            watchedBtn.textContent = 'Add to Watched';
+            watchedBtn.addEventListener('click', (event) => {
+              event.stopPropagation();
+              addToWatched(result);
+            });
+  
+            actions.appendChild(watchlistBtn);
+            actions.appendChild(watchedBtn);
+            actions.appendChild(showmoreBtn);
+  
+            recommendation.appendChild(poster);
+            recommendation.appendChild(title);
+            recommendation.appendChild(actions);
+  
+            recommendationsContainer.appendChild(recommendation);
+          }
+
+            console.log(result)
+      });
+        } else {
+          const recommendationsContainer = document.getElementById('recommendations');
+          recommendationsContainer.innerHTML = `<p>No recommendations found.</p>`;
+        }
+      })
+      .catch(error => {
+        console.log(error);
         const recommendationsContainer = document.getElementById('recommendations');
-        recommendationsContainer.innerHTML = '';
-
-        data.Search.forEach(result => {
-          const recommendation = document.createElement('div');
-          recommendation.classList.add('recommendation');
-
-          const poster = document.createElement('img');
-          poster.src = result.Poster;
-          poster.alt = result.Title;
-
-          const title = document.createElement('p');
-          title.textContent = result.Title + ` (` + result.Year + `)`;
-
-          recommendation.appendChild(poster);
-          recommendation.appendChild(title);
-          recommendationsContainer.appendChild(recommendation);
-        });
-      } else {
-        const recommendationsContainer = document.getElementById('recommendations');
-        recommendationsContainer.innerHTML = `<p>No recommendations found.</p>`;
-      }
-    })
-    .catch(error => {
-      console.log(error);
-      const recommendationsContainer = document.getElementById('recommendations');
-      recommendationsContainer.innerHTML = `<p>Error: ${error.message}</p>`;
-    });
-}
-
-
+        recommendationsContainer.innerHTML = `<p>Error: ${error.message}</p>`;
+      });
+  }
+  
+  function showMovieDetails(imdbID) {
+    // Implement logic to show movie details using the IMDb ID
+    console.log('Showing details for movie with IMDb ID:', imdbID);
+  }
+  
+  function addToWatchlist(movie) {
+    if(JSON.parse(localStorage.getItem("savedWatchlist")) != null) {
+      localWatchlist = (JSON.parse(localStorage.getItem("savedWatchlist")));
+    };
+    watchlist = localWatchlist;
+    watchlist.push(movie);
+    localStorage.setItem("savedWatchlist", JSON.stringify(watchlist));
+    console.log(watchlist);
+    console.log(localStorage.savedWatchlist);
+  } 
+  
+  function addToWatched(movie) {
+    if(JSON.parse(localStorage.getItem("savedWatched")) != null) {
+      localWatched = (JSON.parse(localStorage.getItem("savedWatched")));
+    };
+    watched = localWatched;
+    watched.push(movie);
+    localStorage.setItem("savedWatched", JSON.stringify(watched));
+    console.log(watched);
+    console.log(localStorage.savedWatched);
+  }
+  
   document.addEventListener('DOMContentLoaded', function() {
     // retrieve the movieInfo data from local storage
     const movieData = JSON.parse(localStorage.getItem('movieInfo'));
@@ -259,8 +319,21 @@ function getRecommendations(title) {
     // check if previous movieData exists in local storage
     if (movieData) {
       displayMovieInfo(movieData);
-    }
-  })
+
+  }})
+  
+//function to show more about recommended movie
+
+function showmore(event) {
+  console.log(event)
+  // prevent form submission
+  // event.preventDefault();
+  // grabs the title from movie and sets it as variable called input
+  const query = event.Title
+  // grabs the entered text value from the input and sets it as query
+  fetchSearch(query)
+}
+
     // Function to display movie information
 function displayMovieInfo(movie) {
   const movieInfo = document.getElementById('movieInfo');
@@ -283,10 +356,10 @@ function displayMovieInfo(movie) {
     <p>Rating: ${movie.Rated}</p>
     <p>Director: ${movie.Director}</p>
     <p>Starring: ${movie.Actors}</p>
-    <p>Plot Synopsis: ${movie.Plot}</p>
+    <p id="plot">${movie.Plot}</p>
     ${ratingsHTML}
   `;
 
   movieInfo.append(watchlistButton);
   movieInfo.append(watchedButton);
-}
+  }
