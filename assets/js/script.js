@@ -117,6 +117,7 @@ function watchlistAdd() {
      const movieObject = {
           Title: data.Title,
           Poster: data.Poster,
+          Director: data.Director,
           Rated: data.Rated,
           Actors: data.Actors,
           Ratings: data.Ratings,
